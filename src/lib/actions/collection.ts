@@ -33,7 +33,7 @@ export async function getAllCollections(): Promise<CollectionListItem[]> {
         })
         .from(productImages)
         .as("pi"),
-      eq(sql`pi."productId"`, products.id)
+      eq(sql`pi."product_id"`, products.id)
     )
     .groupBy(collections.id, collections.name, collections.slug, collections.createdAt)
     .orderBy(asc(collections.createdAt));
