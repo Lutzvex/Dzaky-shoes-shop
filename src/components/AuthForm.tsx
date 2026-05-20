@@ -12,10 +12,14 @@ type Props = {
 
 export default function AuthForm({ mode, onSubmit }: Props) {
   const [show, setShow] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
@@ -23,8 +27,11 @@ export default function AuthForm({ mode, onSubmit }: Props) {
       const result = await onSubmit(formData);
 
       if(result?.ok) router.push("/");
-    } catch (e) {
-      console.log("error", e);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Something went wrong. Please try again.";
+      setError(msg);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -38,7 +45,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
           </Link>
         </p>
         <h1 className="mt-3 text-heading-3 text-dark-900">
-          {mode === "sign-in" ? "Welcome Back!" : "Join Nike Today!"}
+          {mode === "sign-in" ? "Welcome Back!" : "Join Dzaky shoes shop!"}
         </h1>
         <p className="mt-1 text-body text-dark-700">
           {mode === "sign-in"
@@ -118,11 +125,18 @@ export default function AuthForm({ mode, onSubmit }: Props) {
           </div>
         </div>
 
+        {error && (
+          <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-body text-red-700">
+            {error}
+          </div>
+        )}
+
         <button
           type="submit"
-          className="mt-2 w-full rounded-full bg-dark-900 px-6 py-3 text-body-medium text-light-100 hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900/20"
+          disabled={loading}
+          className="mt-2 w-full rounded-full bg-dark-900 px-6 py-3 text-body-medium text-light-100 hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900/20 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {mode === "sign-in" ? "Sign In" : "Sign Up"}
+          {loading ? "Please wait..." : mode === "sign-in" ? "Sign In" : "Sign Up"}
         </button>
 
         {mode === "sign-up" && (

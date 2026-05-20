@@ -6,14 +6,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <section className="hidden lg:flex flex-col justify-between bg-dark-900 text-light-100 p-10">
         <div className="flex items-center">
           <div className="h-8 w-8 rounded-md bg-orange inline-flex items-center justify-center">
-            <Image src="/logo.svg" alt="Nike" width={20} height={20} />
+            <span className="text-light-100 font-bold text-sm">D</span>
           </div>
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-heading-2">Just Do It</h2>
+          <h2 className="text-heading-2">Step Into Style</h2>
           <p className="max-w-md text-lead text-light-300">
-            Join millions of athletes and fitness enthusiasts who trust Nike for their performance needs.
+            Join Dzaky shoes shop and discover the best footwear for every occasion.
           </p>
           <div className="flex gap-2" aria-hidden="true">
             <span className="h-2 w-2 rounded-full bg-light-100/90" />
@@ -22,7 +22,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
 
-        <p className="text-footnote text-light-400">© 2025 Nike. All rights reserved.</p>
+        <p className="text-footnote text-light-400">© 2025 Dzaky shoes shop. All rights reserved.</p>
       </section>
 
       <section className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8">

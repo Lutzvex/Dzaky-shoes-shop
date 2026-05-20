@@ -69,16 +69,22 @@ export async function signUp(formData: FormData) {
 
   const data = signUpSchema.parse(rawData);
 
-  const res = await auth.api.signUpEmail({
-    body: {
-      email: data.email,
-      password: data.password,
-      name: data.name,
-    },
-  });
+  try {
+    const res = await auth.api.signUpEmail({
+      body: {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      },
+      headers: await headers(),
+    });
 
-  await migrateGuestToUser();
-  return { ok: true, userId: res.user?.id };
+    await migrateGuestToUser();
+    return { ok: true, userId: res.user?.id };
+  } catch (e: unknown) {
+    console.error("Sign up error:", e);
+    throw new Error("Failed to create account. Email may already be in use.");
+  }
 }
 
 const signInSchema = z.object({
@@ -94,15 +100,21 @@ export async function signIn(formData: FormData) {
 
   const data = signInSchema.parse(rawData);
 
-  const res = await auth.api.signInEmail({
-    body: {
-      email: data.email,
-      password: data.password,
-    },
-  });
+  try {
+    const res = await auth.api.signInEmail({
+      body: {
+        email: data.email,
+        password: data.password,
+      },
+      headers: await headers(),
+    });
 
-  await migrateGuestToUser();
-  return { ok: true, userId: res.user?.id };
+    await migrateGuestToUser();
+    return { ok: true, userId: res.user?.id };
+  } catch (e: unknown) {
+    console.error("Sign in error:", e);
+    throw new Error("Invalid email or password.");
+  }
 }
 
 export async function getCurrentUser() {
