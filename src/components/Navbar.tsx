@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { label: "Women", href: "/products?gender=women" },
   { label: "Kids", href: "/products?gender=unisex" },
   { label: "Collections", href: "/collections" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export default function Navbar({ user }: { user?: { name: string; email: string; id: string } | null }) {
@@ -39,6 +40,18 @@ export default function Navbar({ user }: { user?: { name: string; email: string;
         </ul>
 
         <div className="hidden items-center gap-6 md:flex">
+          <button 
+            onClick={() => alert("Fitur Search sedang dalam pengembangan!")}
+            className="text-body text-dark-900 transition-colors hover:text-dark-700"
+          >
+            Search
+          </button>
+          <button 
+            onClick={() => alert("Fitur Cart sedang dalam pengembangan!")}
+            className="text-body text-dark-900 transition-colors hover:text-dark-700"
+          >
+            My Cart (2)
+          </button>
           {user ? (
             <div className="flex items-center gap-4 border-l border-light-300 pl-6">
               <span className="text-body text-dark-900">Hi, {user.name}</span>
@@ -91,6 +104,10 @@ export default function Navbar({ user }: { user?: { name: string; email: string;
               </Link>
             </li>
           ))}
+          <li className="flex items-center justify-between pt-2 border-t border-light-300 mt-2">
+            <button onClick={() => alert("Fitur Search sedang dalam pengembangan!")} className="text-body py-2 hover:text-dark-700">Search</button>
+            <button onClick={() => alert("Fitur Cart sedang dalam pengembangan!")} className="text-body py-2 hover:text-dark-700">My Cart (2)</button>
+          </li>
           {user ? (
             <li className="flex items-center justify-between pt-2 border-t border-light-300">
               <span className="text-body text-dark-900 py-2">Hi, {user.name}</span>
