@@ -17,6 +17,7 @@ export * from './orders';
 export * from './payments';
 export * from './coupons';
 export * from './wishlists';
+export * from './contact';
 
 export * from './filters/genders';
 export * from './filters/colors';
