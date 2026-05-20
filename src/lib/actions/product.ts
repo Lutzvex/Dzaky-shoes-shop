@@ -15,6 +15,8 @@ import {
   colors,
   users,
   reviews,
+  collections,
+  productCollections,
   type SelectProduct,
   type SelectVariant,
   type SelectProductImage,
@@ -60,6 +62,18 @@ export async function getAllProducts(filters: NormalizedProductFilters): Promise
 
   if (filters.categorySlugs.length) {
     conds.push(inArray(categories.slug, filters.categorySlugs));
+  }
+
+  if (filters.collectionSlugs && filters.collectionSlugs.length) {
+    conds.push(
+      inArray(
+        products.id,
+        db.select({ productId: productCollections.productId })
+          .from(productCollections)
+          .innerJoin(collections, eq(collections.id, productCollections.collectionId))
+          .where(inArray(collections.slug, filters.collectionSlugs))
+      )
+    );
   }
 
   const hasSize = filters.sizeSlugs.length > 0;

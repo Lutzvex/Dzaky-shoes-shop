@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { signOut } from "@/lib/auth/actions";
 
 const NAV_LINKS = [
   { label: "Men", href: "/products?gender=men" },
@@ -12,7 +13,7 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-export default function Navbar() {
+export default function Navbar({ user }: { user?: { name: string; email: string; id: string } | null }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -45,6 +46,26 @@ export default function Navbar() {
           <button className="text-body text-dark-900 transition-colors hover:text-dark-700">
             My Cart (2)
           </button>
+          {user ? (
+            <div className="flex items-center gap-4 border-l border-light-300 pl-6">
+              <span className="text-body text-dark-900">Hi, {user.name}</span>
+              <button 
+                onClick={async () => { await signOut(); window.location.href = '/'; }}
+                className="text-body text-dark-900 transition-colors hover:text-dark-700"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4 border-l border-light-300 pl-6">
+              <Link href="/sign-in" className="text-body text-dark-900 transition-colors hover:text-dark-700">
+                Sign In
+              </Link>
+              <Link href="/sign-up" className="rounded-md bg-dark-900 px-4 py-2 text-body text-light-100 transition-colors hover:bg-dark-700">
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
 
         <button
@@ -77,10 +98,21 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          <li className="flex items-center justify-between pt-2">
-            <button className="text-body">Search</button>
-            <button className="text-body">My Cart (2)</button>
+          <li className="flex items-center justify-between pt-2 border-t border-light-300 mt-2">
+            <button className="text-body py-2">Search</button>
+            <button className="text-body py-2">My Cart (2)</button>
           </li>
+          {user ? (
+            <li className="flex items-center justify-between pt-2 border-t border-light-300">
+              <span className="text-body text-dark-900 py-2">Hi, {user.name}</span>
+              <button onClick={async () => { await signOut(); window.location.href = '/'; }} className="text-body py-2 hover:text-dark-700">Sign Out</button>
+            </li>
+          ) : (
+            <li className="flex flex-col gap-2 pt-4 border-t border-light-300">
+              <Link href="/sign-in" className="block py-2 text-body text-center text-dark-900 hover:text-dark-700">Sign In</Link>
+              <Link href="/sign-up" className="block py-2 rounded-md bg-dark-900 text-center text-body text-light-100 hover:bg-dark-700">Sign Up</Link>
+            </li>
+          )}
         </ul>
       </div>
     </header>

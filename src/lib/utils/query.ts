@@ -85,6 +85,7 @@ export type NormalizedProductFilters = {
   colorSlugs: string[];
   brandSlugs: string[];
   categorySlugs: string[];
+  collectionSlugs: string[];
   priceMin?: number;
   priceMax?: number;
   priceRanges: Array<[number | undefined, number | undefined]>;
@@ -114,6 +115,7 @@ export function parseFilterParams(sp: Record<string, string | string[] | undefin
   const colorSlugs = getArr("color").map((s) => s.toLowerCase());
   const brandSlugs = getArr("brand").map((s) => s.toLowerCase());
   const categorySlugs = getArr("category").map((s) => s.toLowerCase());
+  const collectionSlugs = getArr("collection").map((s) => s.toLowerCase());
 
   const priceRangesStr = getArr("price");
   const priceRanges: Array<[number | undefined, number | undefined]> = priceRangesStr
@@ -148,6 +150,7 @@ export function parseFilterParams(sp: Record<string, string | string[] | undefin
     colorSlugs,
     brandSlugs,
     categorySlugs,
+    collectionSlugs,
     priceMin: priceMin !== undefined && !Number.isNaN(priceMin) ? priceMin : undefined,
     priceMax: priceMax !== undefined && !Number.isNaN(priceMax) ? priceMax : undefined,
     priceRanges,

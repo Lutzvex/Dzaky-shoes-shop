@@ -119,7 +119,7 @@ export async function getCurrentUser() {
 }
 
 export async function signOut() {
-  await auth.api.signOut({ headers: {} });
+  await auth.api.signOut({ headers: await headers() });
   return { ok: true };
 }
 
