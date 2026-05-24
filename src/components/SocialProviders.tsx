@@ -1,13 +1,20 @@
+"use client";
+
 import Image from "next/image";
 
 type Props = { variant?: "sign-in" | "sign-up" };
 
 export default function SocialProviders({ variant = "sign-in" }: Props) {
+  function handleGoogle() {
+    window.location.href = "/api/auth/sign-in/social?provider=google";
+  }
+
   return (
     <div className="space-y-3">
       <button
         type="button"
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-light-300 bg-light-100 px-4 py-3 text-body-medium text-dark-900 hover:bg-light-200 focus:outline-none focus:ring-2 focus:ring-dark-900/10"
+        onClick={handleGoogle}
+        className="flex w-full items-center justify-center gap-3 rounded-xl border border-light-300 bg-light-100 px-4 py-3 text-body-medium text-dark-900 hover:bg-light-200 focus:outline-none focus:ring-2 focus:ring-dark-900/10 transition"
         aria-label={`${variant === "sign-in" ? "Continue" : "Sign up"} with Google`}
       >
         <Image src="/google.svg" alt="" width={18} height={18} />
@@ -15,11 +22,12 @@ export default function SocialProviders({ variant = "sign-in" }: Props) {
       </button>
       <button
         type="button"
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-light-300 bg-light-100 px-4 py-3 text-body-medium text-dark-900 hover:bg-light-200 focus:outline-none focus:ring-2 focus:ring-dark-900/10"
+        disabled
+        className="flex w-full items-center justify-center gap-3 rounded-xl border border-light-300 bg-light-100 px-4 py-3 text-body-medium text-dark-700/50 cursor-not-allowed focus:outline-none"
         aria-label={`${variant === "sign-in" ? "Continue" : "Sign up"} with Apple`}
       >
-        <Image src="/apple.svg" alt="" width={18} height={18} />
-        <span>Continue with Apple</span>
+        <Image src="/apple.svg" alt="" width={18} height={18} className="opacity-40" />
+        <span>Continue with Apple (Coming Soon)</span>
       </button>
     </div>
   );

@@ -19,7 +19,12 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
-  socialProviders: {},
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+  },
   sessions: {
     cookieCache: {
       enabled: true,
@@ -32,7 +37,7 @@ export const auth = betterAuth({
       options: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: 'strict',
+        sameSite: 'lax',
         path: '/',
         maxAge: 60 * 60 * 24 * 7,
       }
