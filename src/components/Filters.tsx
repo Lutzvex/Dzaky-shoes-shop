@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { getArrayParam, removeParams, toggleArrayParam } from "@/lib/utils/query";
 
-const GENDERS = ["men", "women", "unisex"] as const;
+const GENDERS = ["men", "women", "youth"] as const;
 const SIZES = ["XS", "S", "M", "L", "XL"] as const;
 const COLORS = ["black", "white", "red", "green", "blue", "grey"] as const;
 const PRICES = [

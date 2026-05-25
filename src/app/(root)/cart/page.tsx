@@ -137,9 +137,9 @@ export default function CartPage() {
             <span>Total</span>
             <span>${cart.subtotal.toFixed(2)}</span>
           </div>
-          <button className="w-full rounded-full bg-dark-900 py-4 text-body-medium text-light-100 transition hover:opacity-90">
+          <Link href="/checkout" className="w-full flex justify-center rounded-full bg-dark-900 py-4 text-body-medium text-light-100 transition hover:opacity-90">
             Checkout
-          </button>
+          </Link>
           <Link href="/products" className="mt-3 block text-center text-body text-dark-700 hover:text-dark-900 transition">
             Continue Shopping
           </Link>

@@ -2,11 +2,16 @@
 
 import Image from "next/image";
 
+import { authClient } from "@/lib/auth/client";
+
 type Props = { variant?: "sign-in" | "sign-up" };
 
 export default function SocialProviders({ variant = "sign-in" }: Props) {
-  function handleGoogle() {
-    window.location.href = "/api/auth/sign-in/social?provider=google";
+  async function handleGoogle() {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
   }
 
   return (

@@ -4,7 +4,9 @@ import { Card, CollapsibleSection, ProductGallery, SizePicker } from "@/componen
 import { Heart, Star } from "lucide-react";
 import ColorSwatches from "@/components/ColorSwatches";
 import AddToCartButton from "@/components/AddToCartButton";
+import FavoriteButton from "@/components/FavoriteButton";
 import { getProduct, getProductReviews, getRecommendedProducts, type Review, type RecommendedProduct } from "@/lib/actions/product";
+import { checkIsFavorite } from "@/lib/actions/wishlist";
 
 type GalleryVariant = { color: string; images: string[] };
 
@@ -95,7 +97,10 @@ async function AlsoLikeSection({ productId }: { productId: string }) {
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const data = await getProduct(id);
+  const [data, isFavorite] = await Promise.all([
+    getProduct(id),
+    checkIsFavorite(id),
+  ]);
 
   if (!data) {
     return (
@@ -131,6 +136,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     };
   }).filter((gv) => gv.images.length > 0);
 
+  const uniqueGalleryVariants = galleryVariants.reduce((acc, curr) => {
+    if (!acc.find((v) => v.color === curr.color)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, [] as GalleryVariant[]);
+
   const defaultVariant =
     variants.find((v) => v.id === product.defaultVariantId) || variants[0];
 
@@ -156,8 +168,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </nav>
 
       <section className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_480px]">
-        {galleryVariants.length > 0 && (
-          <ProductGallery productId={product.id} variants={galleryVariants} className="lg:sticky lg:top-6" />
+        {uniqueGalleryVariants.length > 0 && (
+          <ProductGallery productId={product.id} variants={uniqueGalleryVariants} className="lg:sticky lg:top-6" />
         )}
 
         <div className="flex flex-col gap-6">
@@ -180,15 +192,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             )}
           </div>
 
-          <ColorSwatches productId={product.id} variants={galleryVariants} />
+          {uniqueGalleryVariants.length > 1 && (
+            <ColorSwatches productId={product.id} variants={uniqueGalleryVariants} />
+          )}
           <SizePicker />
 
           <div className="flex flex-col gap-3">
             <AddToCartButton variantId={defaultVariant?.id ?? null} />
-            <button className="flex items-center justify-center gap-2 rounded-full border border-light-300 px-6 py-4 text-body-medium text-dark-900 transition hover:border-dark-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-[--color-dark-500]">
-              <Heart className="h-5 w-5" />
-              Favorite
-            </button>
+            <FavoriteButton productId={product.id} initialIsFavorite={isFavorite} />
           </div>
 
           <CollapsibleSection title="Product Details" defaultOpen>

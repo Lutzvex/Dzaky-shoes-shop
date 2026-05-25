@@ -187,3 +187,11 @@ export async function removeFromCart(itemId: string) {
   await db.delete(cartItems).where(eq(cartItems.id, itemId));
   return { ok: true };
 }
+
+export async function emptyCart() {
+  const cartId = await findCartId();
+  if (cartId) {
+    await db.delete(cartItems).where(eq(cartItems.cartId, cartId));
+  }
+  return { ok: true };
+}

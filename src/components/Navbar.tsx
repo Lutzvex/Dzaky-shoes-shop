@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Search, ShoppingBag, X } from "lucide-react";
+import { Search, ShoppingBag, X, Heart } from "lucide-react";
 import { signOut } from "@/lib/auth/actions";
 
 const NAV_LINKS = [
+  { label: "New & Featured", href: "/collections" },
   { label: "Men", href: "/products?gender=men" },
   { label: "Women", href: "/products?gender=women" },
-  { label: "Kids", href: "/products?gender=unisex" },
-  { label: "Collections", href: "/collections" },
-  { label: "Contact", href: "/contact" },
+  { label: "Kids", href: "/products?gender=youth" },
+  { label: "Custom", href: "/products?search=custom" },
+  { label: "Launch", href: "/products?sort=newest" },
+  { label: "Sale", href: "/products?sort=price_asc" },
 ] as const;
 
 export default function Navbar({
@@ -42,7 +44,7 @@ export default function Navbar({
         aria-label="Primary"
       >
         <Link href="/" aria-label="Dzaky shoes shop Home" className="flex items-center">
-          <span className="text-xl font-bold tracking-tight">Dzaky shoes shop</span>
+          <span className="text-2xl font-black tracking-tighter uppercase">Dzaky Shoes</span>
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">
@@ -50,7 +52,7 @@ export default function Navbar({
             <li key={l.href}>
               <Link
                 href={l.href}
-                className="text-body text-dark-900 transition-colors hover:text-dark-700"
+                className="text-[13px] font-bold uppercase tracking-widest text-dark-900 transition-all hover:underline underline-offset-8 decoration-2"
               >
                 {l.label}
               </Link>
@@ -67,6 +69,17 @@ export default function Navbar({
           >
             <Search className="h-5 w-5" />
           </button>
+
+          {/* Favorites */}
+          {user && (
+            <Link
+              href="/favorites"
+              className="flex items-center gap-1.5 text-body text-dark-900 transition-colors hover:text-dark-700"
+              aria-label="Favorites"
+            >
+              <Heart className="h-5 w-5" />
+            </Link>
+          )}
 
           {/* Cart */}
           <Link
@@ -115,6 +128,11 @@ export default function Navbar({
           <button onClick={() => setSearchOpen((v) => !v)} aria-label="Search" className="p-2">
             <Search className="h-5 w-5 text-dark-900" />
           </button>
+          {user && (
+            <Link href="/favorites" className="p-2" aria-label="Favorites">
+              <Heart className="h-5 w-5 text-dark-900" />
+            </Link>
+          )}
           <Link href="/cart" className="relative p-2">
             <ShoppingBag className="h-5 w-5 text-dark-900" />
             {cartCount > 0 && (
