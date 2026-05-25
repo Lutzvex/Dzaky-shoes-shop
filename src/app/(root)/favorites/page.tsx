@@ -35,7 +35,7 @@ export default async function FavoritesPage() {
             <Card
               key={item.id}
               title={item.name}
-              imageSrc={item.imageUrl}
+              imageSrc={item.imageUrl || "/google.svg"}
               price={item.price ? Number(item.price) : undefined}
               href={`/products/${item.productId}`}
             />

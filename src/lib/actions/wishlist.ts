@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { wishlists, products, productImages } from "@/lib/db/schema/index";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth/actions";
 import { revalidatePath } from "next/cache";
 
@@ -54,7 +54,12 @@ export async function getWishlistItems() {
       id: wishlists.id,
       productId: products.id,
       name: products.name,
-      price: products.basePrice,
+      price: sql<number | null>`(
+        select price::numeric from product_variants
+        where product_variants.product_id = products.id
+        order by is_default desc
+        limit 1
+      )`,
       imageUrl: productImages.url
     })
     .from(wishlists)
