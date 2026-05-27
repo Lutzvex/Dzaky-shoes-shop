@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: "Women", href: "/products?gender=women" },
   { label: "Kids", href: "/products?gender=youth" },
   { label: "Custom", href: "/products?search=custom" },
+  { label: "Olahraga", href: "/products?search=sport" },
   { label: "Launch", href: "/products?sort=newest" },
   { label: "Sale", href: "/products?sort=price_asc" },
 ] as const;
